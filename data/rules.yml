@@ -1,0 +1,39 @@
+version: "3.1"
+
+rules:
+
+- rule: Activate form
+  steps:
+    - intent: activate_my_form
+    - action: utter_activate_my_form
+    - action: my_form
+    - active_loop: my_form
+
+- rule: End my form
+  condition:
+    - active_loop: my_form
+  steps:
+    - action: my_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+
+- rule: Hungry
+  steps:
+    - intent: user_is_hungry
+    - action: utter_is_hungry
+
+- rule: Not hungry
+  steps:
+    - intent: user_not_hungry
+    - action: utter_not_hungry
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot

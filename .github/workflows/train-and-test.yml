@@ -1,0 +1,31 @@
+name: Train & Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+          cache: 'pipenv'
+      - name: Install pipenv
+        run: pip install pipenv
+      - name: Install dependencies
+        run: pipenv install
+      - name: Validate data
+        run: pipenv run rasa data validate --fail-on-warnings
+      - name: Train
+        run: pipenv run rasa train
+      - name: Test
+        run: pipenv run rasa test --fail-on-prediction-errors

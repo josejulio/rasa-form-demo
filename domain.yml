@@ -1,0 +1,92 @@
+version: "3.1"
+
+intents:
+  - activate_my_form
+  - user_is_hungry
+  - user_not_hungry
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+
+entities:
+  - GPE
+
+forms:
+  my_form:
+    # If we are controlling the form,  It's better to define the required slots in the action code
+    # To get access to the `next_requested_slot` function
+    required_slots: []
+
+slots:
+  name:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: my_form
+            requested_slot: name
+  from:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: GPE
+        conditions:
+          - active_loop: my_form
+  hungry:
+    type: bool
+    mappings:
+      - type: from_intent
+        value: true
+        intent: user_is_hungry
+      - type: from_intent
+        value: false
+        intent: user_not_hungry
+
+responses:
+
+  utter_activate_my_form:
+    - text: "Ok. So you want to start my form."
+
+## utter_say_ + {form_name} + _ +  {slot_name}
+  utter_ask_my_form_name:
+    - text: Tell us your name.
+  utter_ask_my_form_from:
+    - text: Okay. Where do you live?
+  utter_ask_my_form_hungry:
+    - text: Got it. Are you hungry?
+
+  utter_is_hungry:
+    - text: "Noted. You are hungry."
+
+  utter_not_hungry:
+    - text: "Ok. So you are not hungry."
+
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+actions:
+  - validate_my_form
