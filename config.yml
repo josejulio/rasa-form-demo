@@ -29,6 +29,11 @@ pipeline:
      model: "en_core_web_md"
    - name: SpacyEntityExtractor
      dimensions: [GPE]
+   - name: RegexEntityExtractor
+     case_sensitive: False
+     use_lookup_tables: True
+     use_regexes: False
+     use_word_boundaries: False
 # ---- End of non default config ----
    - name: ResponseSelector
      epochs: 100

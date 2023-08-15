@@ -54,12 +54,14 @@ class MyForm(FormValidationAction):
         dispatcher.utter_message(text=f'-- Name: {slots.get("name")}')
         dispatcher.utter_message(text=f'-- From: {slots.get("from")}')
         dispatcher.utter_message(text=f'-- Hungry: {slots.get("hungry")}')
+        dispatcher.utter_message(text=f'-- Food: {slots.get("food")}')
 
         if has_all_slots:
             dispatcher.utter_message(text=f'You\'ve finished the form! Clearing the values...')
             result.append(SlotSet('name', None))
             result.append(SlotSet('from', None))
             result.append(SlotSet('hungry', None))
+            result.append(SlotSet('food', None))
 
         return result
 
@@ -94,6 +96,11 @@ class MyForm(FormValidationAction):
             tracker: Tracker,
             domain: DomainDict
     ) -> List[Text]:
-        return [
-            "name", "from", "hungry"
+        required_slots = [
+            "name", "from", "hungry", "food"
         ]
+
+        if tracker.slots.get("hungry") is False:
+            required_slots.remove("food")
+
+        return required_slots

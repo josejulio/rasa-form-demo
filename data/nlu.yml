@@ -1,6 +1,27 @@
 version: "3.1"
 
 nlu:
+- synonym: poultry
+  examples: |
+    - chicken
+    - turkey
+    - duck
+    - pidgeon
+- lookup: meat_type
+  examples: |
+    - meat
+    - poultry
+    - pork
+    - fish
+
+# It is important to provide at least a dummy example with the usage of the entity.
+# The Regex featurizer is only aware of entities that appear in examples.
+# It doesn't have to cover all cases
+- intent: train_meat_type
+  examples: |
+    - I want [meat](meat_type)
+    - I would like [fish](meat_type)
+    - Give me some [chicken](meat_type)
 - intent: activate_my_form
   examples: |
     - Lets fill the form

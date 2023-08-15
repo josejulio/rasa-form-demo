@@ -4,6 +4,7 @@ intents:
   - activate_my_form
   - user_is_hungry
   - user_not_hungry
+  - train_meat_type
   - greet
   - goodbye
   - affirm
@@ -14,6 +15,7 @@ intents:
 
 entities:
   - GPE
+  - meat_type
 
 forms:
   my_form:
@@ -45,6 +47,13 @@ slots:
       - type: from_intent
         value: false
         intent: user_not_hungry
+  food:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: meat_type
+        conditions:
+          - active_loop: my_form
 
 responses:
 
@@ -58,6 +67,8 @@ responses:
     - text: Okay. Where do you live?
   utter_ask_my_form_hungry:
     - text: Got it. Are you hungry?
+  utter_ask_my_form_food:
+    - text: Understood. What kind of food do you want?
 
   utter_is_hungry:
     - text: "Noted. You are hungry."
